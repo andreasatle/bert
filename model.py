@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text
 import bert_maps as bert
+import tensorflowjs as tfjs
 
 class Model:
     def __init__(self, model_name='small_bert/bert_en_uncased_L-4_H-512_A-8'):
@@ -36,11 +37,14 @@ class Model:
                                  epochs=opt.epochs)
         return history
 
-    def save(self, model_path):
-        self.model.save(model_path, include_optimizer=False)
+    def save(self, model_name):
+        self.model.save(model_name, include_optimizer=False)
 
-    def load(self, model_path):
-        self.model = tf.saved_model.load(model_path)
+    def load(self, model_name):
+        self.model = tf.saved_model.load(model_name)
+
+    def save_to_json(self, model_name):
+        tfjs.converters.save_keras_model(self.model, model_name)
 
 # === Choose a BERT model
 def _choose_a_bert_model(bert_model_name):
