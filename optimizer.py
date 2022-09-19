@@ -41,7 +41,7 @@ class Optimizer:
         return self.__class__.__name__
 
     def set_epochs(self, epochs):
-        '''
+        """
         Sets the number of epochs.
-        '''
+        """
         self.epochs = epochs
