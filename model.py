@@ -58,12 +58,12 @@ class Model:
         """
         self.model.compile(optimizer=opt.optimizer, loss=opt.loss, metrics=opt.metrics)
 
-    def fit(self, data, opt):
+    def fit(self, dataset, opt):
         """
         Fit the BERT-model.
         """
         history = self.model.fit(
-            x=data.train_ds, validation_data=data.val_ds, epochs=opt.epochs
+            x=dataset.train, validation_data=dataset.validation, epochs=opt.epochs
         )
         return history
 

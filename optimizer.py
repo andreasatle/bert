@@ -11,7 +11,7 @@ class Optimizer:
     A class that contains the optimizer used for the BERT-model.
     """
 
-    def __init__(self, data, epochs=5, init_lr=3e-5):
+    def __init__(self, dataset, epochs=5, init_lr=3e-5):
         """
         Initialize the Optimizer class.
         """
@@ -22,7 +22,7 @@ class Optimizer:
         self.loss = tf.keras.losses.BinaryCrossentropy(from_logits=True)
         self.metrics = tf.metrics.BinaryAccuracy()
 
-        steps_per_epoch = tf.data.experimental.cardinality(data.train_ds).numpy()
+        steps_per_epoch = tf.data.experimental.cardinality(dataset.train).numpy()
         num_train_steps = steps_per_epoch * epochs
         num_warmup_steps = int(0.1 * num_train_steps)
 

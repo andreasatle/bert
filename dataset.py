@@ -8,7 +8,7 @@ import shutil
 import tensorflow as tf
 
 
-class Data:
+class Dataset:
     """
     A class that contains the data handling used in model optimization.
     """
@@ -44,7 +44,7 @@ class Data:
 
         # Create the training data set.
         # All the data will be cached and prefetched. This should always be done.
-        self.train_ds = tf.keras.utils.text_dataset_from_directory(
+        self.train = tf.keras.utils.text_dataset_from_directory(
             train_dir,
             batch_size=batch_size,
             validation_split=0.2,
@@ -52,12 +52,12 @@ class Data:
             seed=seed,
         )
 
-        self.class_names = self.train_ds.class_names
-        self.train_ds = self.train_ds.cache().prefetch(buffer_size=buffer_size)
+        self.class_names = self.train.class_names
+        self.train = self.train.cache().prefetch(buffer_size=buffer_size)
 
         # Create the validation dataset from the training data
         # Hm, it might be important to fix the seed to be the same as above.
-        self.val_ds = tf.keras.utils.text_dataset_from_directory(
+        self.validation = tf.keras.utils.text_dataset_from_directory(
             train_dir,
             batch_size=batch_size,
             validation_split=0.2,
@@ -65,16 +65,16 @@ class Data:
             seed=seed,
         )
 
-        self.val_ds = self.val_ds.cache().prefetch(buffer_size=buffer_size)
+        self.validation = self.validation.cache().prefetch(buffer_size=buffer_size)
 
         # Read in the test data. No splitting here.
         # Remark: Normally we would have to split train, test, and validate data
         #   from a single dataset. Here it was already split train, test...
-        self.test_ds = tf.keras.utils.text_dataset_from_directory(
+        self.test = tf.keras.utils.text_dataset_from_directory(
             test_dir, batch_size=batch_size
         )
 
-        self.test_ds = self.test_ds.cache().prefetch(buffer_size=buffer_size)
+        self.test = self.test.cache().prefetch(buffer_size=buffer_size)
 
     def __str__(self):
         """
@@ -91,7 +91,7 @@ class Data:
         samples -- The number of samples (default 3)
         """
 
-        for text_batch, label_batch in self.train_ds.take(1):
+        for text_batch, label_batch in self.train.take(1):
             for i in range(samples):
                 print(f"Review: {text_batch.numpy()[i]}")
                 label = label_batch.numpy()[i]
