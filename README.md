@@ -4,11 +4,11 @@
 
 The main workflow is:
 ```
-data = Data()
+dataset = Dataset()
 model = Model()
-opt = Optimizer(data)
+opt = Optimizer(dataset)
 model.compile(opt)
-history = model.fit(data, opt)
+history = model.fit(dataset, opt)
 model.save('model')
 ```
 
