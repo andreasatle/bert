@@ -19,10 +19,12 @@ class Model:
         """
 
         print("model_name:", model_name)
+
         # === Choose a BERT model
         tfhub_handle_encoder, tfhub_handle_preprocess = _choose_a_bert_model(model_name)
         print("Encoder:", tfhub_handle_encoder)
         print("Pre-process:", tfhub_handle_preprocess)
+
         # === Preprocess model
         bert_preprocess_model = hub.KerasLayer(tfhub_handle_preprocess)
 
