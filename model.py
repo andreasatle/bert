@@ -1,13 +1,24 @@
+"""
+This module contains the BERT-model.
+"""
 import tensorflow as tf
 import tensorflow_hub as hub
-import tensorflow_text as text
-import bert_maps as bert
+import tensorflow_text as _
 import tensorflowjs as tfjs
+import bert_maps as bert
 
 
 class Model:
-    def __init__(self, model_name="small_bert/bert_en_uncased_L-4_H-512_A-8"):
+    """
+    A class that contains the BERT-model.
+    """
 
+    def __init__(self, model_name):
+        """
+        Initialize the Model class.
+        """
+
+        print("model_name:", model_name)
         # === Choose a BERT model
         tfhub_handle_encoder, tfhub_handle_preprocess = _choose_a_bert_model(model_name)
         print("Encoder:", tfhub_handle_encoder)
@@ -32,23 +43,45 @@ class Model:
             tfhub_handle_preprocess, tfhub_handle_encoder
         )
 
+    def __str__(self):
+        """
+        Output string for the Model class.
+        """
+
+        return self.__class__.__name__
+
     def compile(self, opt):
+        """
+        Compile the BERT-model.
+        """
         self.model.compile(optimizer=opt.optimizer, loss=opt.loss, metrics=opt.metrics)
 
     def fit(self, data, opt):
+        """
+        Fit the BERT-model.
+        """
         history = self.model.fit(
             x=data.train_ds, validation_data=data.val_ds, epochs=opt.epochs
         )
         return history
 
     def save(self, model_name):
+        """
+        Save the BERT-model.
+        """
         self.model.save(model_name, include_optimizer=False)
 
     def load(self, model_name):
+        """
+        Load the BERT-model.
+        """
         self.model = tf.saved_model.load(model_name)
 
     # This hasn't been validated to work yet.
     def save_to_json(self, model_name):
+        """
+        Save the model to the json-format.
+        """
         tfjs.converters.save_keras_model(self.model, model_name)
 
 

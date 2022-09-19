@@ -1,9 +1,21 @@
+"""
+This module contains the optimizer for the model.
+"""
+
 import tensorflow as tf
 from official.nlp import optimization  # to create AdamW optimizer
 
 
 class Optimizer:
+    """
+    A class that contains the optimizer used for the BERT-model.
+    """
+
     def __init__(self, data, epochs=5, init_lr=3e-5):
+        """
+        Initialize the Optimizer class.
+        """
+
         self.epochs = epochs
         self.init_lr = init_lr
 
@@ -20,3 +32,16 @@ class Optimizer:
             num_warmup_steps=num_warmup_steps,
             optimizer_type="adamw",
         )
+
+    def __str__(self):
+        """
+        Output string for the Optimizer class.
+        """
+
+        return self.__class__.__name__
+
+    def set_epochs(self, epochs):
+        '''
+        Sets the number of epochs.
+        '''
+        self.epochs = epochs

@@ -1,3 +1,8 @@
+"""
+This module contain maps to different text classifiers on tensorflow_hub.
+"""
+
+# fmt: off
 map_name_to_handle = {
     'bert_en_uncased_L-12_H-768_A-12':
         'https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/3',
@@ -135,3 +140,5 @@ map_model_to_preprocess = {
     'talking-heads_base':
         'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3',
 }
+
+# fmt: on

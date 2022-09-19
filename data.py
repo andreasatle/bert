@@ -1,3 +1,6 @@
+"""
+This module contains the data handling used in the model optimization.
+"""
 # === Imports
 
 import os
@@ -6,9 +9,16 @@ import tensorflow as tf
 
 
 class Data:
+    """
+    A class that contains the data handling used in model optimization.
+    """
 
     # === Download the IMDB dataset
     def __init__(self):
+        """
+        Initialize the Data class.
+        """
+
         # url of stanford dataset
         url = "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 
@@ -28,7 +38,7 @@ class Data:
         shutil.rmtree(remove_dir)
 
         # Set some parameters, AUTOTUNE is for the caching.
-        AUTOTUNE = tf.data.AUTOTUNE
+        buffer_size = tf.data.AUTOTUNE
         batch_size = 32
         seed = 42
 
@@ -43,7 +53,7 @@ class Data:
         )
 
         self.class_names = self.train_ds.class_names
-        self.train_ds = self.train_ds.cache().prefetch(buffer_size=AUTOTUNE)
+        self.train_ds = self.train_ds.cache().prefetch(buffer_size=buffer_size)
 
         # Create the validation dataset from the training data
         # Hm, it might be important to fix the seed to be the same as above.
@@ -55,7 +65,7 @@ class Data:
             seed=seed,
         )
 
-        self.val_ds = self.val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+        self.val_ds = self.val_ds.cache().prefetch(buffer_size=buffer_size)
 
         # Read in the test data. No splitting here.
         # Remark: Normally we would have to split train, test, and validate data
@@ -64,15 +74,25 @@ class Data:
             test_dir, batch_size=batch_size
         )
 
-        self.test_ds = self.test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+        self.test_ds = self.test_ds.cache().prefetch(buffer_size=buffer_size)
 
     def __str__(self):
+        """
+        Output string for the Data class.
+        """
         return self.__class__.__name__
 
     # === Look at a few samples
-    def look_at(self):
+    def look_at(self, samples=3):
+        """
+        Look at the first train samples.
+
+        Keyword arguments:
+        samples -- The number of samples (default 3)
+        """
+
         for text_batch, label_batch in self.train_ds.take(1):
-            for i in range(3):
+            for i in range(samples):
                 print(f"Review: {text_batch.numpy()[i]}")
                 label = label_batch.numpy()[i]
                 print(f"Label : {label} ({self.class_names[label]})")
