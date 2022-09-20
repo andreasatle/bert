@@ -1,4 +1,4 @@
-# Refactor of tensorflow example "Classify text with BERT"
+# BERT-model optimization
 
 [Classify text with BERT](https://www.tensorflow.org/text/tutorials/classify_text_with_bert)
 
